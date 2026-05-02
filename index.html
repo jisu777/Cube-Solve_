@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#000000">
+  <meta name="color-scheme" content="only light">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -16,7 +17,7 @@
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png">
   <style>
     :root {
-      color-scheme: dark;
+      color-scheme: only light;
       --bg: #000;
       --fg: #f7f7f4;
       --muted: rgba(255, 255, 255, 0.58);
@@ -41,6 +42,7 @@
       color: var(--fg);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
         "Noto Sans KR", sans-serif;
+      forced-color-adjust: none;
     }
 
     button {
@@ -210,6 +212,14 @@
       border-radius: 50%;
       border: 1px solid rgba(255, 255, 255, 0.22);
       box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+      background-color: var(--cube-color, #fff) !important;
+      opacity: 1 !important;
+      filter: none !important;
+      mix-blend-mode: normal;
+      forced-color-adjust: none;
+      color-scheme: only light;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
 
     .face-net {
@@ -290,6 +300,11 @@
       font-size: 14px;
       font-weight: 700;
       outline: none;
+    }
+
+    .delay-input option {
+      background: #050505;
+      color: #fff;
     }
 
     .delay-input:focus {
@@ -407,6 +422,22 @@
       transform: rotateX(-26deg) rotateY(-34deg);
     }
 
+    .prediction-cube.reveal-spin {
+      animation: predictionReveal var(--reveal-duration, 3.8s) cubic-bezier(0.16, 0.72, 0.18, 1) both;
+    }
+
+    @keyframes predictionReveal {
+      0% { transform: rotateX(-26deg) rotateY(-34deg) scale(1); }
+      12% { transform: rotateX(-26deg) rotateY(56deg) scale(0.98); }
+      24% { transform: rotateX(64deg) rotateY(56deg) scale(0.96); }
+      36% { transform: rotateX(64deg) rotateY(146deg) scale(0.95); }
+      48% { transform: rotateX(154deg) rotateY(146deg) scale(0.95); }
+      60% { transform: rotateX(154deg) rotateY(236deg) scale(0.96); }
+      72% { transform: rotateX(244deg) rotateY(236deg) scale(0.97); }
+      84% { transform: rotateX(244deg) rotateY(326deg) scale(0.98); }
+      100% { transform: rotateX(-26deg) rotateY(-34deg) scale(1); }
+    }
+
     .prediction-cube.large {
       width: 142px;
       height: 142px;
@@ -461,7 +492,13 @@
       border-radius: 2px;
       box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.34);
       forced-color-adjust: none;
-      color-scheme: light;
+      color-scheme: only light;
+      background-color: var(--cube-color, #ffffff) !important;
+      opacity: 1 !important;
+      filter: none !important;
+      mix-blend-mode: normal;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
 
     .prediction-cube.large .prediction-sticker {
@@ -526,8 +563,15 @@
 
     .mini-sticker {
       border-radius: 4px;
-      background: #ffffff;
+      background-color: var(--cube-color, #ffffff) !important;
       box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.28);
+      forced-color-adjust: none;
+      color-scheme: only light;
+      opacity: 1 !important;
+      filter: none !important;
+      mix-blend-mode: normal;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
 
     .arrow-mark {
@@ -562,6 +606,110 @@
       color: rgba(255, 255, 255, 0.62);
       font-size: 12px;
       line-height: 1.45;
+    }
+
+    .scan-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 8;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: max(18px, env(safe-area-inset-top)) 16px max(18px, env(safe-area-inset-bottom));
+      background: #000;
+      color: #fff;
+      overflow: auto;
+    }
+
+    .scan-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .scan-header h1 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .scan-view {
+      position: relative;
+      width: min(100%, 520px);
+      aspect-ratio: 1;
+      margin: 0 auto;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #080808;
+    }
+
+    .scan-view video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scaleX(-1);
+    }
+
+    .scan-guide {
+      position: absolute;
+      inset: 13%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      border: 2px solid rgba(255, 255, 255, 0.86);
+      box-shadow: 0 0 0 999px rgba(0, 0, 0, 0.34);
+      pointer-events: none;
+    }
+
+    .scan-guide span {
+      border: 1px solid rgba(255, 255, 255, 0.54);
+    }
+
+    .scan-copy {
+      max-width: 520px;
+      margin: 0 auto;
+      color: rgba(255, 255, 255, 0.72);
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .scan-preview {
+      display: grid;
+      grid-template-columns: repeat(3, 34px);
+      gap: 4px;
+      justify-content: center;
+    }
+
+    .scan-preview span {
+      width: 34px;
+      height: 34px;
+      border-radius: 5px;
+      background-color: var(--cube-color, #fff) !important;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.38);
+      forced-color-adjust: none;
+      color-scheme: only light;
+    }
+
+    .scan-summary {
+      max-width: 520px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+    }
+
+    .scan-count {
+      min-height: 44px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      font-size: 11px;
+      font-weight: 800;
     }
 
     .toggle {
@@ -657,11 +805,15 @@
       appearance: none;
       -webkit-appearance: none;
       forced-color-adjust: none;
-      color-scheme: light;
+      color-scheme: only light;
       border: 0;
       border-radius: 5px;
       opacity: 1;
       filter: none;
+      background-color: var(--cube-color, #ffffff) !important;
+      mix-blend-mode: normal;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.36);
     }
 
@@ -780,6 +932,9 @@
     const ACTIVE_PREDICTION_PRESET_KEY = "magic-cube-active-prediction-preset";
     const EXTRACT_HOLD_KEY = "magic-cube-extract-hold-seconds";
     const BORDER_MODE_KEY = "magic-cube-border-mode";
+    const PREDICTION_REVEAL_MODE_KEY = "magic-cube-prediction-reveal-mode";
+    const PREDICTION_REVEAL_DELAY_KEY = "magic-cube-prediction-reveal-delay";
+    const PREDICTION_REVEAL_SPEED_KEY = "magic-cube-prediction-reveal-speed";
     const COLORS = {
       White: "#ffffff",
       Yellow: "#ffd928",
@@ -789,6 +944,14 @@
       Green: "#18a85b"
     };
     const FORCE_OPTIONS = ["None", ...Object.keys(COLORS)];
+    const SCAN_STEPS = [
+      { key: "front", label: "Front" },
+      { key: "right", label: "Right" },
+      { key: "back", label: "Back" },
+      { key: "left", label: "Left" },
+      { key: "up", label: "Up" },
+      { key: "down", label: "Down" }
+    ];
     const FACE_SLOTS = [
       { key: "top", label: "Top", normal: "0,1,0", defaultColor: "White" },
       { key: "left", label: "Left", normal: "-1,0,0", defaultColor: "Orange" },
@@ -826,12 +989,18 @@
 
     const TEXT = {
       ko: {
-        random: "Random", solve: "Solve", force: "Force", colorForce: "Color force", patternForce: "Pattern force",
-        shakeForce: "Shake force", shakeDelay: "Shake delay", extractHold: "Extract hold", cubeBorder: "Cube border",
-        doubleTapDelay: "Double tap delay", solveSpeed: "Solve Speed", slow: "Slow", fast: "Fast",
-        predictionCubes: "Prediction cubes", patternForceCube: "Pattern force cube", save: "Save", back: "Back",
-        patternPreset: "Pattern preset", predictionPreset: "Prediction preset",
-        cubeFormulas: "Cube Formulas", close: "Close", practiceCubes: "Practice Cubes", cube: "Cube",
+        random: "랜덤", solve: "맞추기", force: "포스", colorForce: "색상 포스", patternForce: "패턴 포스",
+        shakeForce: "흔들기 포스", shakeDelay: "흔들기 딜레이", extractHold: "꺼내기 길게 누르기", cubeBorder: "큐브 테두리",
+        doubleTapDelay: "더블탭 딜레이", solveSpeed: "맞추기 속도", slow: "느림", fast: "빠름",
+        predictionReveal: "예언 큐브 연출", revealMode: "변화 방식", revealDelay: "작동 딜레이", revealSpeed: "연출 속도", revealInstant: "바로 바뀜", revealSpin: "맞춰지며 회전",
+        predictionCubes: "예언 큐브", patternForceCube: "패턴 포스 큐브", save: "저장", back: "돌아가기",
+        patternPreset: "패턴 프리셋", predictionPreset: "예언 프리셋",
+        cubeFormulas: "큐브 공식", close: "닫기", practiceCubes: "연습 큐브", cube: "큐브",
+        scanCube: "큐브 스캔", capture: "촬영", retake: "다시 촬영", scanSolve: "Solve 하기",
+        scanGuide: "실제 큐브의 해당 면을 정사각형 가이드에 맞춘 뒤 촬영하세요.",
+        scanDone: "스캔 완료", scanInvalid: "색상 개수가 완벽하지 않습니다. 그래도 연습용으로 적용할 수 있어요.",
+        colors: { None: "없음", White: "흰색", Yellow: "노란색", Red: "빨간색", Orange: "주황색", Blue: "파란색", Green: "초록색" },
+        borders: { none: "얇은 검정", classic: "클래식", black: "검정", white: "흰색" },
         formulas: {
           rightHand: ["오른손 공식", "오른쪽 층과 윗면을 번갈아 돌리는 가장 기본 손동작입니다."],
           leftHand: ["왼손 공식", "왼손으로 코너를 넣을 때 쓰는 기본 공식입니다."],
@@ -846,9 +1015,15 @@
         random: "Random", solve: "Solve", force: "Force", colorForce: "Color force", patternForce: "Pattern force",
         shakeForce: "Shake force", shakeDelay: "Shake delay", extractHold: "Extract hold", cubeBorder: "Cube border",
         doubleTapDelay: "Double tap delay", solveSpeed: "Solve Speed", slow: "Slow", fast: "Fast",
+        predictionReveal: "Prediction reveal", revealMode: "Reveal mode", revealDelay: "Reveal delay", revealSpeed: "Reveal speed", revealInstant: "Instant", revealSpin: "Solving spin",
         predictionCubes: "Prediction cubes", patternForceCube: "Pattern force cube", save: "Save", back: "Back",
         patternPreset: "Pattern preset", predictionPreset: "Prediction preset",
         cubeFormulas: "Cube Formulas", close: "Close", practiceCubes: "Practice Cubes", cube: "Cube",
+        scanCube: "Scan Cube", capture: "Capture", retake: "Retake", scanSolve: "Solve",
+        scanGuide: "Place this face inside the square guide, then capture it.",
+        scanDone: "Scan complete", scanInvalid: "Color counts are not perfect. You can still apply it for practice.",
+        colors: { None: "None", White: "White", Yellow: "Yellow", Red: "Red", Orange: "Orange", Blue: "Blue", Green: "Green" },
+        borders: { none: "Thin black", classic: "Classic", black: "Black", white: "White" },
         formulas: {
           rightHand: ["Right Hand", "A basic trigger that alternates the right layer and the top face."],
           leftHand: ["Left Hand", "A left-hand trigger used to place corners smoothly."],
@@ -863,9 +1038,15 @@
         random: "Random", solve: "Solve", force: "Force", colorForce: "カラーフォース", patternForce: "パターンフォース",
         shakeForce: "シェイクフォース", shakeDelay: "シェイク遅延", extractHold: "取り出し長押し", cubeBorder: "キューブ枠",
         doubleTapDelay: "ダブルタップ遅延", solveSpeed: "ソルブ速度", slow: "遅い", fast: "速い",
+        predictionReveal: "予言表示", revealMode: "表示モード", revealDelay: "表示遅延", revealSpeed: "表示速度", revealInstant: "一瞬", revealSpin: "そろえながら回転",
         predictionCubes: "予言キューブ", patternForceCube: "パターン用キューブ", save: "保存", back: "戻る",
         patternPreset: "パターン保存枠", predictionPreset: "予言保存枠",
-        cubeFormulas: "キューブ公式", close: "閉じる", practiceCubes: "練習キューブ", cube: "Cube",
+        cubeFormulas: "キューブ公式", close: "閉じる", practiceCubes: "練習キューブ", cube: "キューブ",
+        scanCube: "キューブスキャン", capture: "撮影", retake: "再撮影", scanSolve: "ソルブ",
+        scanGuide: "この面を四角いガイドに合わせて撮影してください。",
+        scanDone: "スキャン完了", scanInvalid: "色の数が完全ではありません。練習用として適用できます。",
+        colors: { None: "なし", White: "白", Yellow: "黄", Red: "赤", Orange: "オレンジ", Blue: "青", Green: "緑" },
+        borders: { none: "細い黒", classic: "クラシック", black: "黒", white: "白" },
         formulas: {
           rightHand: ["右手公式", "右面と上面を交互に回す基本の手順です。"],
           leftHand: ["左手公式", "左手でコーナーを入れるときの基本手順です。"],
@@ -880,9 +1061,15 @@
         random: "Random", solve: "Solve", force: "Force", colorForce: "颜色强制", patternForce: "图案强制",
         shakeForce: "摇动强制", shakeDelay: "摇动延迟", extractHold: "取出长按", cubeBorder: "方块边框",
         doubleTapDelay: "双击延迟", solveSpeed: "复原速度", slow: "慢", fast: "快",
+        predictionReveal: "预言显示", revealMode: "显示模式", revealDelay: "显示延迟", revealSpeed: "显示速度", revealInstant: "瞬间", revealSpin: "复原旋转",
         predictionCubes: "预言方块", patternForceCube: "图案方块", save: "保存", back: "返回",
         patternPreset: "图案预设", predictionPreset: "预言预设",
-        cubeFormulas: "魔方公式", close: "关闭", practiceCubes: "练习方块", cube: "Cube",
+        cubeFormulas: "魔方公式", close: "关闭", practiceCubes: "练习方块", cube: "方块",
+        scanCube: "扫描方块", capture: "拍摄", retake: "重拍", scanSolve: "复原",
+        scanGuide: "请把这一面放入方形取景框后拍摄。",
+        scanDone: "扫描完成", scanInvalid: "颜色数量不完全正确，但仍可用于练习。",
+        colors: { None: "无", White: "白色", Yellow: "黄色", Red: "红色", Orange: "橙色", Blue: "蓝色", Green: "绿色" },
+        borders: { none: "细黑线", classic: "经典", black: "黑色", white: "白色" },
         formulas: {
           rightHand: ["右手公式", "交替转动右层和顶层的基础手法。"],
           leftHand: ["左手公式", "用于放入角块的左手基础手法。"],
@@ -948,6 +1135,16 @@
       localStorage.setItem(PREDICTION_KEY, JSON.stringify(cubes));
     }
 
+    function randomPredictionCubes() {
+      const names = Object.keys(COLORS);
+      return Array.from({ length: 5 }, () =>
+        Object.fromEntries(PREDICTION_FACES.map((face) => [
+          face.normal,
+          Array.from({ length: 9 }, () => names[Math.floor(Math.random() * names.length)])
+        ]))
+      );
+    }
+
     const DEFAULT_PATTERN = Object.fromEntries(
       FACE_SLOTS.map((face) => [face.normal, Array(9).fill("White")])
     );
@@ -1010,12 +1207,27 @@
 
     function readExtractHold() {
       const saved = Number(localStorage.getItem(EXTRACT_HOLD_KEY));
-      return Number.isFinite(saved) ? clamp(saved, 0.1, 2) : 0.3;
+      return Number.isFinite(saved) ? clamp(saved, 0.2, 3) : 0.8;
     }
 
     function readBorderMode() {
       const saved = localStorage.getItem(BORDER_MODE_KEY);
       return ["none", "classic", "white", "black"].includes(saved) ? saved : "classic";
+    }
+
+    function readPredictionRevealMode() {
+      const saved = localStorage.getItem(PREDICTION_REVEAL_MODE_KEY);
+      return ["instant", "spin"].includes(saved) ? saved : "spin";
+    }
+
+    function readPredictionRevealDelay() {
+      const saved = Number(localStorage.getItem(PREDICTION_REVEAL_DELAY_KEY));
+      return Number.isFinite(saved) ? clamp(saved, 0, 30) : 0;
+    }
+
+    function readPredictionRevealSpeed() {
+      const saved = Number(localStorage.getItem(PREDICTION_REVEAL_SPEED_KEY));
+      return [0.5, 0.75, 1, 1.5, 2].includes(saved) ? saved : 1;
     }
 
     function readPresetIndex(key) {
@@ -1416,28 +1628,74 @@
           return hits.find((hit) => hit.object.type === "Mesh") || hits[0];
         }
 
+        function screenPointFromLocal(localPoint) {
+          const world = root.localToWorld(localPoint.clone());
+          const projected = world.project(camera);
+          const rect = renderer.domElement.getBoundingClientRect();
+          return new THREE.Vector2(
+            (projected.x + 1) * rect.width / 2,
+            (-projected.y + 1) * rect.height / 2
+          );
+        }
+
+        function dominantAxisFromVector(vector) {
+          const ax = Math.abs(vector.x);
+          const ay = Math.abs(vector.y);
+          const az = Math.abs(vector.z);
+          if (ax >= ay && ax >= az) return "x";
+          if (ay >= ax && ay >= az) return "y";
+          return "z";
+        }
+
+        function faceNormalFromHit(hit, cubie) {
+          const { gap } = cubeStyle();
+          const localPoint = root.worldToLocal(hit.point.clone());
+          const center = cubie.position.clone().multiplyScalar(gap);
+          const delta = localPoint.sub(center);
+          const axis = dominantAxisFromVector(delta);
+          const normal = new THREE.Vector3(0, 0, 0);
+          normal[axis] = delta[axis] >= 0 ? 1 : -1;
+          return normal;
+        }
+
         function moveFromDrag(hit, dx, dy) {
           const object = hit.object.parent?.userData.cubieId !== undefined ? hit.object.parent : hit.object;
           const cubie = cubies.find((item) => item.id === object.userData.cubieId);
           if (!cubie) return null;
-          const face = hit.face?.normal?.clone() || new THREE.Vector3(0, 0, 1);
-          face.transformDirection(object.matrixWorld);
-          root.worldToLocal(face.add(root.getWorldPosition(new THREE.Vector3()))).normalize();
-          const dominant = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+          const drag = new THREE.Vector2(dx, dy);
+          if (drag.length() < 14) return null;
 
-          if (Math.abs(face.z) > 0.55) {
-            return dominant === "x"
-              ? { axis: "y", layer: Math.round(cubie.position.y), dir: dx > 0 ? 1 : -1 }
-              : { axis: "x", layer: Math.round(cubie.position.x), dir: dy > 0 ? 1 : -1 };
-          }
-          if (Math.abs(face.x) > Math.abs(face.y)) {
-            return dominant === "x"
-              ? { axis: "y", layer: Math.round(cubie.position.y), dir: face.x > 0 ? (dx > 0 ? -1 : 1) : (dx > 0 ? 1 : -1) }
-              : { axis: "z", layer: Math.round(cubie.position.z), dir: dy > 0 ? -1 : 1 };
-          }
-          return dominant === "x"
-            ? { axis: "z", layer: Math.round(cubie.position.z), dir: dx > 0 ? 1 : -1 }
-            : { axis: "x", layer: Math.round(cubie.position.x), dir: face.y > 0 ? (dy > 0 ? 1 : -1) : (dy > 0 ? -1 : 1) };
+          const face = faceNormalFromHit(hit, cubie);
+          const localAxes = [
+            new THREE.Vector3(1, 0, 0),
+            new THREE.Vector3(0, 1, 0),
+            new THREE.Vector3(0, 0, 1)
+          ].filter((axis) => Math.abs(axis.dot(face)) < 0.5);
+          const origin = cubie.position.clone().multiplyScalar(cubeStyle().gap);
+          const originScreen = screenPointFromLocal(origin);
+
+          let best = null;
+          localAxes.forEach((axis) => {
+            const screen = screenPointFromLocal(origin.clone().add(axis));
+            const projectedAxis = screen.sub(originScreen);
+            if (projectedAxis.length() < 0.001) return;
+            projectedAxis.normalize();
+            const score = drag.clone().normalize().dot(projectedAxis);
+            if (!best || Math.abs(score) > Math.abs(best.score)) {
+              best = { axis, score };
+            }
+          });
+          if (!best || Math.abs(best.score) < 0.34) return null;
+
+          const dragAxis = best.axis.clone().multiplyScalar(best.score >= 0 ? 1 : -1);
+          const rotateVectorLocal = face.clone().cross(dragAxis);
+          const rotateAxis = dominantAxisFromVector(rotateVectorLocal);
+          const dir = rotateVectorLocal[rotateAxis] >= 0 ? 1 : -1;
+          return {
+            axis: rotateAxis,
+            layer: Math.round(cubie.position[rotateAxis]),
+            dir
+          };
         }
 
         function colorCounts() {
@@ -1611,9 +1869,11 @@
 
         async function performSecretForce() {
           if (sequenceBusy) return;
+          const forcedColor = apiRef.current.forceColor;
+          const pattern = forcedColor && forcedColor !== "None" ? apiRef.current.patternForce : null;
+          if (!pattern?.enabled && (!forcedColor || forcedColor === "None")) return;
           sequenceBusy = true;
           try {
-            const pattern = apiRef.current.patternForce;
             const moves = [
               { axis: "y", layer: 0, dir: 1 },
               { axis: "y", layer: 0, dir: -1 },
@@ -1634,7 +1894,7 @@
               for (let i = 0; i < 2; i += 1) {
                 await runMove(moves[i], { duration: 115 });
               }
-              forceBackFace(apiRef.current.forceColor);
+              forceBackFace(forcedColor);
             }
           } finally {
             sequenceBusy = false;
@@ -1713,6 +1973,33 @@
           return changes;
         }
 
+        function applyScannedState(scanned) {
+          if (!scanned) return;
+          const faceKeyMap = {
+            front: "front",
+            right: "right",
+            back: "back",
+            left: "left",
+            up: "top",
+            down: "bottom"
+          };
+          cubies = createCubies();
+          FACE_SLOTS.forEach((face) => {
+            const scanKey = Object.keys(faceKeyMap).find((key) => faceKeyMap[key] === face.key);
+            const colors = scanned[scanKey];
+            if (!Array.isArray(colors) || colors.length !== 9) return;
+            const { axis, value } = faceAxis(face.normal);
+            cubies.forEach((cubie) => {
+              if (Math.round(cubie.position[axis]) !== value) return;
+              const index = faceStickerIndex(face.normal, cubie.position);
+              if (COLORS[colors[index]]) cubie.stickers[face.normal] = colors[index];
+            });
+          });
+          history = [];
+          visualDirty = true;
+          rebuildCube();
+        }
+
         async function randomize() {
           if (isMoving || sequenceBusy) return;
           restoreCube();
@@ -1720,8 +2007,9 @@
           try {
           const axes = ["x", "y", "z"];
           const pattern = apiRef.current.patternForce;
-          const shouldPatternForce = Boolean(pattern?.enabled);
           const forcedColor = apiRef.current.forceColor;
+          const forceEnabled = forcedColor && forcedColor !== "None";
+          const shouldPatternForce = forceEnabled && Boolean(pattern?.enabled);
           const shouldColorForce = !shouldPatternForce && forcedColor && forcedColor !== "None";
           const shouldForce = shouldPatternForce || shouldColorForce;
           const moves = Array.from({ length: shouldForce ? 28 : 17 }, () => ({
@@ -1772,7 +2060,8 @@
           restoreCube();
           sequenceBusy = true;
           try {
-          const shouldVisualCorrect = visualDirty || apiRef.current.patternForce?.enabled || (apiRef.current.forceColor && apiRef.current.forceColor !== "None");
+          const forceEnabled = apiRef.current.forceColor && apiRef.current.forceColor !== "None";
+          const shouldVisualCorrect = visualDirty || (forceEnabled && apiRef.current.patternForce?.enabled) || forceEnabled;
           const reverse = history.splice(0).reverse().map((move) => ({ ...move, dir: -move.dir }));
           const moves = reverse;
           for (let index = 0; index < moves.length; index += 1) {
@@ -1802,6 +2091,12 @@
               const changed = blendTowardSolved(6);
               if (!changed) break;
             }
+          }
+          if (shouldVisualCorrect) {
+            cubies = createCubies();
+            history = [];
+            visualDirty = false;
+            rebuildCube();
           }
           visualDirty = false;
           } finally {
@@ -1853,14 +2148,17 @@
             hit,
             mode: hit ? "cube" : "orbit",
             dragging: false,
-            extracting: false
+            extracting: false,
+            extractArmed: false
           };
           if (hit) {
             extractHoldTimer = window.setTimeout(() => {
-              if (active?.id === event.pointerId && !isMoving && !sequenceBusy) {
-                active.extracting = true;
+              if (active?.id === event.pointerId && !active.dragging && !isMoving && !sequenceBusy) {
+                active.extractArmed = true;
+                root.scale.setScalar(0.9);
+                setCubeOpacity(0.92);
               }
-            }, clamp(Number(apiRef.current.extractHold ?? 0.3), 0.1, 2) * 1000);
+            }, clamp(Number(apiRef.current.extractHold ?? 0.8), 0.2, 3) * 1000);
           }
           renderer.domElement.setPointerCapture(event.pointerId);
         }
@@ -1872,6 +2170,9 @@
           const totalX = event.clientX - active.startX;
           const totalY = event.clientY - active.startY;
           active.dragging = Math.hypot(totalX, totalY) > 8;
+          if (active.dragging && !active.extractArmed) {
+            clearTimeout(extractHoldTimer);
+          }
           const rect = renderer.domElement.getBoundingClientRect();
           const edgeDistance = Math.min(
             event.clientX - rect.left,
@@ -1879,19 +2180,7 @@
             event.clientY - rect.top,
             rect.bottom - event.clientY
           );
-          if (
-            active.mode === "cube" &&
-            !active.extracting &&
-            active.dragging &&
-            (
-              (Math.abs(totalX) >= Math.abs(totalY) &&
-                Math.abs(totalX) > rect.width * 0.18 &&
-                Math.min(event.clientX - rect.left, rect.right - event.clientX) < rect.width * 0.28) ||
-              (Math.abs(totalY) > Math.abs(totalX) &&
-                Math.hypot(totalX, totalY) > Math.min(rect.width, rect.height) * 0.24 &&
-                edgeDistance < Math.min(rect.width, rect.height) * 0.2)
-            )
-          ) {
+          if (active.mode === "cube" && active.extractArmed && !active.extracting && active.dragging) {
             active.extracting = true;
           }
 
@@ -1922,7 +2211,9 @@
             if (!cubeGone) {
               settleCubeBack();
             }
-          } else if (active.mode === "cube" && moved > 18 && active.hit && !isMoving && !sequenceBusy) {
+          } else if (active.extractArmed) {
+            settleCubeBack();
+          } else if (active.mode === "cube" && moved > 12 && active.hit && !isMoving && !sequenceBusy) {
             const move = moveFromDrag(active.hit, dx, dy);
             if (move) runMove(move, { duration: 210 });
           } else if (moved < 8 && active.mode === "orbit") {
@@ -1966,6 +2257,7 @@
         apiRef.current.extractHold = extractHold;
         apiRef.current.borderMode = borderMode;
         apiRef.current.forcePatternStickers = forcePatternStickers;
+        apiRef.current.applyScannedState = applyScannedState;
         apiRef.current.refreshDesign = rebuildCube;
 
         rebuildCube();
@@ -1986,9 +2278,13 @@
           solve: () => apiRef.current.solve?.(),
           restore: () => restoreCube(),
           force: () => apiRef.current.patternForce?.enabled
-            ? apiRef.current.forcePatternStickers?.(apiRef.current.patternForce)
-            : apiRef.current.forceBackFace?.(apiRef.current.forceColor),
+            && apiRef.current.forceColor
+            && apiRef.current.forceColor !== "None"
+              ? apiRef.current.forcePatternStickers?.(apiRef.current.patternForce)
+              : apiRef.current.forceBackFace?.(apiRef.current.forceColor),
           shakeAll: () => forceAllFaces(apiRef.current.forceColor)
+          ,
+          applyState: (state) => apiRef.current.applyScannedState?.(state)
         };
 
         return () => {
@@ -2040,6 +2336,9 @@
       const [shakeDelay, setShakeDelay] = useState(() => readShakeDelay());
       const [extractHold, setExtractHold] = useState(() => readExtractHold());
       const [borderMode, setBorderMode] = useState(() => readBorderMode());
+      const [predictionRevealMode, setPredictionRevealMode] = useState(() => readPredictionRevealMode());
+      const [predictionRevealDelay, setPredictionRevealDelay] = useState(() => readPredictionRevealDelay());
+      const [predictionRevealSpeed, setPredictionRevealSpeed] = useState(() => readPredictionRevealSpeed());
       const [predictionCubes, setPredictionCubes] = useState(() => readPredictionCubes());
       const [patternPresets, setPatternPresets] = useState(() => readPatternPresets());
       const [predictionPresets, setPredictionPresets] = useState(() => readPredictionPresets());
@@ -2047,6 +2346,11 @@
       const [activePredictionPreset, setActivePredictionPreset] = useState(() => readPresetIndex(ACTIVE_PREDICTION_PRESET_KEY));
       const [language, setLanguage] = useState(() => readLanguage());
       const [menuOpen, setMenuOpen] = useState(false);
+      const [scanOpen, setScanOpen] = useState(false);
+      const [scanStep, setScanStep] = useState(0);
+      const [scanState, setScanState] = useState({});
+      const [scanPreview, setScanPreview] = useState(null);
+      const [scanMessage, setScanMessage] = useState("");
       const [draftColor, setDraftColor] = useState(forceColor);
       const [draftPattern, setDraftPattern] = useState(patternForce);
       const [draftDelay, setDraftDelay] = useState(forceDelay);
@@ -2055,13 +2359,25 @@
       const [draftShakeDelay, setDraftShakeDelay] = useState(shakeDelay);
       const [draftExtractHold, setDraftExtractHold] = useState(extractHold);
       const [draftBorderMode, setDraftBorderMode] = useState(borderMode);
+      const [draftPredictionRevealMode, setDraftPredictionRevealMode] = useState(predictionRevealMode);
+      const [draftPredictionRevealDelay, setDraftPredictionRevealDelay] = useState(predictionRevealDelay);
+      const [draftPredictionRevealSpeed, setDraftPredictionRevealSpeed] = useState(predictionRevealSpeed);
       const [draftPredictions, setDraftPredictions] = useState(predictionCubes);
+      const [displayPredictions, setDisplayPredictions] = useState(() => randomPredictionCubes());
+      const [predictionRevealing, setPredictionRevealing] = useState(false);
       const [activePrediction, setActivePrediction] = useState(0);
       const [paintColor, setPaintColor] = useState("White");
       const [activeCell, setActiveCell] = useState(null);
       const [editorRotation, setEditorRotation] = useState({ x: -24, y: 34 });
       const editorDragRef = useRef(null);
+      const menuTapRef = useRef({ last: 0 });
+      const predictionRevealTimersRef = useRef([]);
+      const videoRef = useRef(null);
+      const scanCanvasRef = useRef(null);
+      const scanStreamRef = useRef(null);
       const t = TEXT[language] || TEXT.ko;
+      const colorLabel = (name) => t.colors?.[name] || name;
+      const borderLabel = (name) => t.borders?.[name] || name;
 
       function changeLanguage(nextLanguage) {
         setLanguage(nextLanguage);
@@ -2074,8 +2390,11 @@
         localStorage.setItem(SOLVE_SPEED_KEY, String(Number(draftSolveSpeed)));
         localStorage.setItem(SHAKE_FORCE_KEY, String(Boolean(draftShakeForce)));
         localStorage.setItem(SHAKE_DELAY_KEY, String(clamp(Number(draftShakeDelay) || 0, 0, 30)));
-        localStorage.setItem(EXTRACT_HOLD_KEY, String(clamp(Number(draftExtractHold) || 0.3, 0.1, 2)));
+        localStorage.setItem(EXTRACT_HOLD_KEY, String(clamp(Number(draftExtractHold) || 0.8, 0.2, 3)));
         localStorage.setItem(BORDER_MODE_KEY, draftBorderMode);
+        localStorage.setItem(PREDICTION_REVEAL_MODE_KEY, draftPredictionRevealMode);
+        localStorage.setItem(PREDICTION_REVEAL_DELAY_KEY, String(clamp(Number(draftPredictionRevealDelay) || 0, 0, 30)));
+        localStorage.setItem(PREDICTION_REVEAL_SPEED_KEY, String(Number(draftPredictionRevealSpeed)));
         savePatternForce(draftPattern);
         savePredictionCubes(draftPredictions);
         const nextPatternPresets = patternPresets.map((preset, index) => index === activePatternPreset ? cloneData(draftPattern) : preset);
@@ -2092,8 +2411,11 @@
         setSolveSpeed(Number(draftSolveSpeed));
         setShakeForce(Boolean(draftShakeForce));
         setShakeDelay(clamp(Number(draftShakeDelay) || 0, 0, 30));
-        setExtractHold(clamp(Number(draftExtractHold) || 0.3, 0.1, 2));
+        setExtractHold(clamp(Number(draftExtractHold) || 0.8, 0.2, 3));
         setBorderMode(draftBorderMode);
+        setPredictionRevealMode(draftPredictionRevealMode);
+        setPredictionRevealDelay(clamp(Number(draftPredictionRevealDelay) || 0, 0, 30));
+        setPredictionRevealSpeed(Number(draftPredictionRevealSpeed));
         setPredictionCubes(draftPredictions);
         setSettingsOpen(false);
       }
@@ -2140,6 +2462,9 @@
           setDraftShakeDelay(readShakeDelay());
           setDraftExtractHold(readExtractHold());
           setDraftBorderMode(readBorderMode());
+          setDraftPredictionRevealMode(readPredictionRevealMode());
+          setDraftPredictionRevealDelay(readPredictionRevealDelay());
+          setDraftPredictionRevealSpeed(readPredictionRevealSpeed());
           setDraftPredictions(readPredictionCubes());
           setPatternPresets(readPatternPresets());
           setPredictionPresets(readPredictionPresets());
@@ -2150,13 +2475,25 @@
       }
 
       function selectPatternPreset(index) {
+        const nextPresets = patternPresets.map((preset, presetIndex) =>
+          presetIndex === activePatternPreset ? cloneData(draftPattern) : preset
+        );
+        localStorage.setItem(PATTERN_PRESETS_KEY, JSON.stringify(nextPresets));
+        localStorage.setItem(ACTIVE_PATTERN_PRESET_KEY, String(index));
+        setPatternPresets(nextPresets);
         setActivePatternPreset(index);
-        setDraftPattern(cloneData(patternPresets[index] || { enabled: false, stickers: DEFAULT_PATTERN }));
+        setDraftPattern(cloneData(nextPresets[index] || { enabled: false, stickers: DEFAULT_PATTERN }));
       }
 
       function selectPredictionPreset(index) {
+        const nextPresets = predictionPresets.map((preset, presetIndex) =>
+          presetIndex === activePredictionPreset ? cloneData(draftPredictions) : preset
+        );
+        localStorage.setItem(PREDICTION_PRESETS_KEY, JSON.stringify(nextPresets));
+        localStorage.setItem(ACTIVE_PREDICTION_PRESET_KEY, String(index));
+        setPredictionPresets(nextPresets);
         setActivePredictionPreset(index);
-        setDraftPredictions(cloneData(predictionPresets[index] || DEFAULT_PREDICTIONS));
+        setDraftPredictions(cloneData(nextPresets[index] || DEFAULT_PREDICTIONS));
         setActivePrediction(0);
       }
 
@@ -2185,10 +2522,208 @@
         }));
       }
 
-      function PredictionCube({ cube, large = false, editable = false }) {
+      function clearPredictionRevealTimers() {
+        predictionRevealTimersRef.current.forEach((timer) => clearTimeout(timer));
+        predictionRevealTimersRef.current = [];
+      }
+
+      function blendPredictionCubes(fromCubes, toCubes, progress) {
+        const solveOrder = [4, 1, 7, 3, 5, 0, 2, 6, 8];
+        return toCubes.map((targetCube, cubeIndex) => {
+          const sourceCube = fromCubes[cubeIndex] || targetCube;
+          const cubeDelay = cubeIndex * 0.055;
+          const cubeProgress = clamp((progress - cubeDelay) / 0.82, 0, 1);
+          return Object.fromEntries(PREDICTION_FACES.map((face) => {
+            const source = sourceCube?.[face.normal] || Array(9).fill("White");
+            const target = targetCube?.[face.normal] || source;
+            const faceOffset = face.key === "front" ? 0 : face.key === "top" ? 0.14 : 0.28;
+            return [
+              face.normal,
+              target.map((color, stickerIndex) => {
+                const orderedIndex = solveOrder.indexOf(stickerIndex);
+                const stickerDelay = faceOffset + orderedIndex * 0.065;
+                return cubeProgress >= stickerDelay ? color : source[stickerIndex];
+              })
+            ];
+          }));
+        });
+      }
+
+      function triggerPredictionReveal() {
+        clearPredictionRevealTimers();
+        const startDelay = clamp(Number(predictionRevealDelay) || 0, 0, 30) * 1000;
+        const begin = setTimeout(() => {
+          const startCubes = cloneData(displayPredictions);
+          const targetCubes = cloneData(predictionCubes);
+          if (predictionRevealMode === "instant") {
+            setPredictionRevealing(false);
+            setDisplayPredictions(targetCubes);
+            return;
+          }
+          setPredictionRevealing(true);
+          const speed = Math.max(0.5, Number(predictionRevealSpeed) || 1);
+          const totalDuration = 4200 / speed;
+          const steps = 13;
+          Array.from({ length: steps }, (_, step) => {
+            const timer = setTimeout(() => {
+              setDisplayPredictions(blendPredictionCubes(startCubes, targetCubes, step / (steps - 1)));
+            }, step * (totalDuration / (steps - 1)));
+            predictionRevealTimersRef.current.push(timer);
+          });
+          const finish = setTimeout(() => {
+            setDisplayPredictions(targetCubes);
+            setPredictionRevealing(false);
+          }, totalDuration + 220);
+          predictionRevealTimersRef.current.push(finish);
+        }, startDelay);
+        predictionRevealTimersRef.current.push(begin);
+      }
+
+      function handleMenuPointerUp(event) {
+        if (event.target.closest("button, select, input, a")) return;
+        const now = performance.now();
+        if (now - menuTapRef.current.last < 340) {
+          menuTapRef.current.last = 0;
+          triggerPredictionReveal();
+          return;
+        }
+        menuTapRef.current.last = now;
+      }
+
+      useEffect(() => {
+        if (!menuOpen) {
+          clearPredictionRevealTimers();
+          setPredictionRevealing(false);
+          return;
+        }
+        setDisplayPredictions(randomPredictionCubes());
+        setPredictionRevealing(false);
+        menuTapRef.current.last = 0;
+        return clearPredictionRevealTimers;
+      }, [menuOpen]);
+
+      function stopScanCamera() {
+        scanStreamRef.current?.getTracks?.().forEach((track) => track.stop());
+        scanStreamRef.current = null;
+      }
+
+      async function openScan() {
+        setScanOpen(true);
+        setScanStep(0);
+        setScanState({});
+        setScanPreview(null);
+        setScanMessage("");
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: { ideal: "environment" } },
+            audio: false
+          });
+          scanStreamRef.current = stream;
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+            await videoRef.current.play();
+          }
+        } catch {
+          setScanMessage("Camera unavailable");
+        }
+      }
+
+      function closeScan() {
+        stopScanCamera();
+        setScanOpen(false);
+        setScanPreview(null);
+      }
+
+      useEffect(() => () => stopScanCamera(), []);
+
+      function rgbToHsv(r, g, b) {
+        r /= 255; g /= 255; b /= 255;
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        const d = max - min;
+        let h = 0;
+        if (d) {
+          if (max === r) h = ((g - b) / d) % 6;
+          else if (max === g) h = (b - r) / d + 2;
+          else h = (r - g) / d + 4;
+          h *= 60;
+          if (h < 0) h += 360;
+        }
+        return { h, s: max ? d / max : 0, v: max };
+      }
+
+      function classifyColor(r, g, b) {
+        const { h, s, v } = rgbToHsv(r, g, b);
+        if (v > 0.72 && s < 0.24) return "White";
+        if (h >= 42 && h < 78) return "Yellow";
+        if (h >= 12 && h < 42) return "Orange";
+        if (h < 12 || h >= 342) return "Red";
+        if (h >= 78 && h < 170) return "Green";
+        return "Blue";
+      }
+
+      function captureScanFace() {
+        const video = videoRef.current;
+        const canvas = scanCanvasRef.current;
+        if (!video || !canvas || !video.videoWidth) return;
+        const size = Math.min(video.videoWidth, video.videoHeight) * 0.74;
+        const startX = (video.videoWidth - size) / 2;
+        const startY = (video.videoHeight - size) / 2;
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const context = canvas.getContext("2d", { willReadFrequently: true });
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const colors = [];
+        for (let row = 0; row < 3; row += 1) {
+          for (let col = 0; col < 3; col += 1) {
+            const cx = Math.round(startX + size * (col + 0.5) / 3);
+            const cy = Math.round(startY + size * (row + 0.5) / 3);
+            const sample = Math.max(10, Math.round(size / 18));
+            const data = context.getImageData(cx - sample / 2, cy - sample / 2, sample, sample).data;
+            let r = 0, g = 0, b = 0, count = 0;
+            for (let i = 0; i < data.length; i += 4) {
+              r += data[i]; g += data[i + 1]; b += data[i + 2]; count += 1;
+            }
+            colors.push(classifyColor(r / count, g / count, b / count));
+          }
+        }
+        setScanPreview(colors);
+      }
+
+      function acceptScanFace() {
+        if (!scanPreview) return;
+        const key = SCAN_STEPS[scanStep].key;
+        setScanState((state) => ({ ...state, [key]: scanPreview }));
+        setScanPreview(null);
+        setScanStep((step) => Math.min(step + 1, SCAN_STEPS.length));
+      }
+
+      function scanCounts(state = scanState) {
+        const counts = Object.fromEntries(Object.keys(COLORS).map((name) => [name, 0]));
+        Object.values(state).flat().forEach((name) => {
+          if (counts[name] !== undefined) counts[name] += 1;
+        });
+        return counts;
+      }
+
+      function applyScanAndSolve() {
+        const counts = scanCounts();
+        const validEnough = Object.values(counts).every((count) => count === 9);
+        if (!validEnough) setScanMessage(t.scanInvalid);
+        window.magicCube?.applyState?.(scanState);
+        closeScan();
+        setMenuOpen(false);
+        setTimeout(() => window.magicCube?.solve?.(), 220);
+      }
+
+      function PredictionCube({ cube, large = false, editable = false, spinning = false, spinDelay = 0, revealSpeed = 1 }) {
+        const duration = `${4.2 / Math.max(0.5, Number(revealSpeed) || 1)}s`;
         return React.createElement(
           "div",
-          { className: `prediction-cube ${large ? "large" : ""}` },
+          {
+            className: `prediction-cube ${large ? "large" : ""} ${spinning ? "reveal-spin" : ""}`,
+            style: spinning ? { animationDelay: `${spinDelay}ms`, "--reveal-duration": duration } : undefined
+          },
           PREDICTION_FACES.map((face) => React.createElement(
             "div",
             { key: face.normal, className: "prediction-face", "data-face": face.key },
@@ -2198,7 +2733,7 @@
               return React.createElement(editable ? "button" : "span", {
                 key: index,
                 className: `prediction-sticker ${editable && activeCell === cellKey ? "active" : ""}`,
-                style: { backgroundColor: COLORS[color] },
+                style: { "--cube-color": COLORS[color] },
                 onClick: editable ? () => paintPredictionSticker(face.normal, index) : undefined,
                 "aria-label": editable ? `${face.label} ${index + 1}` : undefined
               });
@@ -2218,7 +2753,7 @@
             formula.colors.map((color, index) => React.createElement("span", {
               key: index,
               className: "mini-sticker",
-              style: { backgroundColor: color }
+              style: { "--cube-color": color }
             })),
             React.createElement("span", { className: "arrow-mark" })
           ),
@@ -2278,13 +2813,13 @@
                 React.createElement("span", {
                   className: "swatch",
                   style: {
-                    backgroundColor: name === "None" ? "transparent" : COLORS[name],
+                    "--cube-color": name === "None" ? "transparent" : COLORS[name],
                     backgroundImage: name === "None"
                       ? "linear-gradient(135deg, transparent 43%, rgba(255,255,255,.72) 44%, rgba(255,255,255,.72) 56%, transparent 57%)"
                       : "none"
                   }
                 }),
-                React.createElement("span", null, name)
+                React.createElement("span", null, colorLabel(name))
               ))
             ),
             React.createElement(
@@ -2318,8 +2853,8 @@
               React.createElement("input", {
                 className: "delay-input",
                 type: "number",
-                min: "0.1",
-                max: "2",
+                min: "0.2",
+                max: "3",
                 step: "0.1",
                 value: draftExtractHold,
                 onChange: (event) => setDraftExtractHold(event.target.value)
@@ -2336,11 +2871,61 @@
                   value: draftBorderMode,
                   onChange: (event) => setDraftBorderMode(event.target.value)
                 },
-                React.createElement("option", { value: "none" }, "None"),
-                React.createElement("option", { value: "classic" }, "Classic"),
-                React.createElement("option", { value: "black" }, "Black"),
-                React.createElement("option", { value: "white" }, "White")
+                React.createElement("option", { value: "none" }, borderLabel("none")),
+                React.createElement("option", { value: "classic" }, borderLabel("classic")),
+                React.createElement("option", { value: "black" }, borderLabel("black")),
+                React.createElement("option", { value: "white" }, borderLabel("white"))
               )
+            ),
+            React.createElement("div", { className: "hint" }, t.predictionReveal),
+            React.createElement(
+              "div",
+              { className: "settings-row" },
+              React.createElement("span", null, t.revealMode),
+              React.createElement(
+                "select",
+                {
+                  className: "delay-input",
+                  value: draftPredictionRevealMode,
+                  onChange: (event) => setDraftPredictionRevealMode(event.target.value)
+                },
+                React.createElement("option", { value: "instant" }, t.revealInstant),
+                React.createElement("option", { value: "spin" }, t.revealSpin)
+              )
+            ),
+            React.createElement(
+              "div",
+              { className: "settings-row" },
+              React.createElement("span", null, t.revealDelay),
+              React.createElement("input", {
+                className: "delay-input",
+                type: "number",
+                min: "0",
+                max: "30",
+                step: "0.5",
+                value: draftPredictionRevealDelay,
+                onChange: (event) => setDraftPredictionRevealDelay(event.target.value)
+              })
+            ),
+            React.createElement(
+              "div",
+              { className: "settings-row" },
+              React.createElement("span", null, t.revealSpeed),
+              React.createElement("span", { className: "speed-value" }, `${draftPredictionRevealSpeed}x`)
+            ),
+            React.createElement(
+              "div",
+              { className: "speed-control" },
+              React.createElement("span", null, t.slow),
+              React.createElement("input", {
+                type: "range",
+                min: "0",
+                max: "4",
+                step: "1",
+                value: [0.5, 0.75, 1, 1.5, 2].indexOf(Number(draftPredictionRevealSpeed)),
+                onChange: (event) => setDraftPredictionRevealSpeed([0.5, 0.75, 1, 1.5, 2][Number(event.target.value)])
+              }),
+              React.createElement("span", { className: "speed-value" }, t.fast)
             ),
             React.createElement(
               "div",
@@ -2396,7 +2981,7 @@
                   className: `color-choice palette ${paintColor === name ? "selected" : ""}`,
                   onClick: () => setPaintColor(name)
                 },
-                React.createElement("span", { className: "swatch", style: { backgroundColor: COLORS[name] } })
+                React.createElement("span", { className: "swatch", style: { "--cube-color": COLORS[name] } })
               ))
             ),
             React.createElement("div", { className: "hint" }, t.predictionPreset),
@@ -2485,7 +3070,7 @@
                         event.stopPropagation();
                         paintSticker(face.normal, index);
                       },
-                      style: { backgroundColor: COLORS[color] },
+                      style: { "--cube-color": COLORS[color] },
                       "aria-label": `${face.label} ${index + 1}`
                     });
                   })
@@ -2502,11 +3087,18 @@
         ),
         menuOpen && React.createElement(
           "section",
-          { className: "formula-screen", role: "dialog", "aria-modal": "true", "aria-label": "Cube formulas" },
+          {
+            className: "formula-screen",
+            role: "dialog",
+            "aria-modal": "true",
+            "aria-label": "Cube formulas",
+            onPointerUp: handleMenuPointerUp
+          },
           React.createElement(
             "div",
             { className: "formula-header" },
             React.createElement("h1", null, t.cubeFormulas),
+            React.createElement("button", { className: "action", onClick: openScan }, t.scanCube),
             React.createElement("button", { className: "action", onClick: () => setMenuOpen(false) }, t.close)
           ),
           React.createElement(
@@ -2516,13 +3108,18 @@
             React.createElement(
               "div",
               { className: "prediction-row" },
-              predictionCubes.map((cube, index) => React.createElement(
+              displayPredictions.map((cube, index) => React.createElement(
                 "div",
                 { className: "prediction-item", key: index },
                 React.createElement(
                   "div",
                   { className: "prediction-cube-wrap" },
-                  React.createElement(PredictionCube, { cube })
+                  React.createElement(PredictionCube, {
+                    cube,
+                    spinning: predictionRevealing,
+                    spinDelay: index * 130,
+                    revealSpeed: predictionRevealSpeed
+                  })
                 ),
                 React.createElement("span", null, `${t.cube} ${index + 1}`)
               ))
@@ -2533,6 +3130,68 @@
             { className: "formula-list" },
             FORMULAS.map((formula) => React.createElement(FormulaCard, { key: formula.name, formula }))
           )
+        ),
+        scanOpen && React.createElement(
+          "section",
+          { className: "scan-screen", role: "dialog", "aria-modal": "true", "aria-label": t.scanCube },
+          React.createElement(
+            "div",
+            { className: "scan-header" },
+            React.createElement("h1", null, t.scanCube),
+            React.createElement("button", { className: "action", onClick: closeScan }, t.close)
+          ),
+          scanStep < SCAN_STEPS.length && React.createElement(
+            React.Fragment,
+            null,
+            React.createElement("div", { className: "scan-copy" }, `${scanStep + 1}/6 · ${SCAN_STEPS[scanStep].label}`),
+            React.createElement(
+              "div",
+              { className: "scan-view" },
+              React.createElement("video", { ref: videoRef, playsInline: true, muted: true }),
+              React.createElement(
+                "div",
+                { className: "scan-guide" },
+                Array.from({ length: 9 }, (_, index) => React.createElement("span", { key: index }))
+              )
+            ),
+            React.createElement("p", { className: "scan-copy" }, t.scanGuide),
+            scanPreview && React.createElement(
+              "div",
+              { className: "scan-preview" },
+              scanPreview.map((name, index) => React.createElement("span", {
+                key: index,
+                style: { "--cube-color": COLORS[name] }
+              }))
+            ),
+            React.createElement(
+              "div",
+              { className: "settings-actions" },
+              React.createElement("button", { className: "action", onClick: captureScanFace }, scanPreview ? t.retake : t.capture),
+              scanPreview && React.createElement("button", { className: "action", onClick: acceptScanFace }, t.save)
+            )
+          ),
+          scanStep >= SCAN_STEPS.length && React.createElement(
+            React.Fragment,
+            null,
+            React.createElement("p", { className: "scan-copy" }, t.scanDone),
+            React.createElement(
+              "div",
+              { className: "scan-summary" },
+              Object.keys(COLORS).map((name) => React.createElement(
+                "div",
+                { key: name, className: "scan-count" },
+                `${colorLabel(name)} ${scanCounts()[name]}`
+              ))
+            ),
+            scanMessage && React.createElement("p", { className: "scan-copy" }, scanMessage),
+            React.createElement(
+              "div",
+              { className: "settings-actions" },
+              React.createElement("button", { className: "action", onClick: () => { setScanStep(0); setScanState({}); setScanPreview(null); } }, t.retake),
+              React.createElement("button", { className: "action", onClick: applyScanAndSolve }, t.scanSolve)
+            )
+          ),
+          React.createElement("canvas", { ref: scanCanvasRef, style: { display: "none" } })
         )
       );
     }

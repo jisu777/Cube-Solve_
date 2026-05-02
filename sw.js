@@ -1,4 +1,4 @@
-const CACHE_NAME = "cube-solve-v12";
+const CACHE_NAME = "cube-solve-v21";
 const ASSETS = [
   "./",
   "./index.html",
